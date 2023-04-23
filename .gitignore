@@ -1,0 +1,9 @@
+# Project place file
+/rbx-react-redux.rbxlx
+
+# Roblox Studio lock files
+/*.rbxlx.lock
+/*.rbxl.lock
+
+# Wally
+Packages
