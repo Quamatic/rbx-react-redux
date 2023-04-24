@@ -5,6 +5,7 @@ version = "1.0.0"
 license = "MIT + Apache 2.0"
 registry = "https://github.com/UpliftGames/wally-index"
 realm = "shared"
+exclude = ["stories"]
 
 [dependencies]
 React = "core-packages/react@17.0.1-rc.19"
