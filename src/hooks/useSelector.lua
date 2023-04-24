@@ -12,7 +12,7 @@ local function subscribe(store_, callback)
 	return store_.subscribe(callback)
 end
 
-local function createSelectorHook(context): <Selected>() -> Selected
+local function createSelectorHook(context)
 	context = context or ReactReduxContext
 
 	local useReduxContext = if context == ReactReduxContext
