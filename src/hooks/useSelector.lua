@@ -54,6 +54,7 @@ local function createSelectorHook(context)
 
 		local ctx = useReduxContext()
 		local store = ctx.store
+		local subscription = ctx.subscription
 
 		local source = React.useMemo(function()
 			return React.createMutableSource(store, function()
@@ -108,7 +109,7 @@ local function createSelectorHook(context)
 		end, { selector, isEqual })
 
 		local subscribe = React.useCallback(function(_, callback)
-			return ctx.subscription:addNestedSub(callback)
+			return subscription:addNestedSub(callback)
 		end, {})
 
 		local selectedState = React.useMutableSource(source, getSnapshot, subscribe)

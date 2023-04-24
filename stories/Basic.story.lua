@@ -9,7 +9,7 @@ local e = React.createElement
 
 local counterSlice = Redux.createSlice({
 	name = "counter",
-	initialState = { value = 0 },
+	initialState = { value = 0, someOtherValue = 0 },
 	reducers = {
 		increment = function(state)
 			state = table.clone(state)
@@ -37,13 +37,17 @@ local function Demo()
 		return state.counter.value
 	end)
 
+	local someOtherValue = ReactRedux.useSelector(function(state)
+		return state.counter.someOtherValue
+	end)
+
 	local dispatch = ReactRedux.useDispatch()
 
 	return e("TextButton", {
 		AnchorPoint = Vector2.new(0.5, 0.5),
 		Position = UDim2.fromScale(0.5, 0.5),
 		Size = UDim2.fromOffset(250, 100),
-		Text = `Counter: {count}`,
+		Text = `Counter: {count}\nSomeOtherValue: {someOtherValue}`,
 
 		[React.Event.Activated] = function()
 			dispatch(increment())
