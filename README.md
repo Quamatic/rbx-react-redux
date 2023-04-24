@@ -1,6 +1,9 @@
 # rbx-react-redux
 React bindings for `rbx-redux`
 
+# Installation
+Wally package coming soon.
+
 # Usage Guide
 ## Passing a Store
 ```lua

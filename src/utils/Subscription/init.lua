@@ -8,7 +8,7 @@ Subscription.__index = Subscription
 function Subscription.new(store, parentSub)
 	return setmetatable({
 		_store = store,
-		_parentSub = parentSub,
+		_parentSub = parentSub :: Subscription?,
 		_unsubscribe = nil :: () -> ()?,
 		_listeners = nullListeners,
 	}, Subscription)
