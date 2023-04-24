@@ -8,4 +8,5 @@ realm = "shared"
 
 [dependencies]
 React = "core-packages/react@17.0.1-rc.19"
+ReactRoblox = "core-packages/react-roblox@17.0.1-rc.19"
 Redux = "quamatic/rbx-redux@^1.0.0"

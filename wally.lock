@@ -48,6 +48,21 @@ version = "17.0.1-rc.19"
 dependencies = [["LuauPolyfill", "core-packages/luau-polyfill@1.2.3"], ["Shared", "core-packages/shared@17.0.1-rc.19"]]
 
 [[package]]
+name = "core-packages/react-reconciler"
+version = "17.0.1-rc.19"
+dependencies = [["LuauPolyfill", "core-packages/luau-polyfill@1.2.3"], ["Promise", "evaera/promise@4.0.0"], ["React", "core-packages/react@17.0.1-rc.19"], ["Scheduler", "core-packages/scheduler@17.0.1-rc.19"], ["Shared", "core-packages/shared@17.0.1-rc.19"]]
+
+[[package]]
+name = "core-packages/react-roblox"
+version = "17.0.1-rc.19"
+dependencies = [["LuauPolyfill", "core-packages/luau-polyfill@1.2.3"], ["React", "core-packages/react@17.0.1-rc.19"], ["ReactReconciler", "core-packages/react-reconciler@17.0.1-rc.19"], ["Scheduler", "core-packages/scheduler@17.0.1-rc.19"], ["Shared", "core-packages/shared@17.0.1-rc.19"]]
+
+[[package]]
+name = "core-packages/scheduler"
+version = "17.0.1-rc.19"
+dependencies = [["LuauPolyfill", "core-packages/luau-polyfill@1.2.3"], ["Shared", "core-packages/shared@17.0.1-rc.19"]]
+
+[[package]]
 name = "core-packages/shared"
 version = "17.0.1-rc.19"
 dependencies = [["LuauPolyfill", "core-packages/luau-polyfill@1.2.3"]]
@@ -75,7 +90,7 @@ dependencies = []
 [[package]]
 name = "quamatic/rbx-react-redux"
 version = "1.0.0"
-dependencies = [["React", "core-packages/react@17.0.1-rc.19"], ["Redux", "quamatic/rbx-redux@1.0.0"]]
+dependencies = [["React", "core-packages/react@17.0.1-rc.19"], ["ReactRoblox", "core-packages/react-roblox@17.0.1-rc.19"], ["Redux", "quamatic/rbx-redux@1.0.0"]]
 
 [[package]]
 name = "quamatic/rbx-redux"

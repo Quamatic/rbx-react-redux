@@ -1,0 +1,13 @@
+{
+    "name": "rbx-react-redux-test",
+    "tree": {
+        "$className": "DataModel",
+        "ReplicatedStorage": {
+            "$className": "ReplicatedStorage",
+            "$path": "Packages",
+            "ReactRedux": {
+                "$path": "src"
+            }
+        }
+    }
+}
