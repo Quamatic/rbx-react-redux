@@ -34,8 +34,8 @@ end
 function Subscription:trySubscribe()
 	if self._unsubscribe == nil then
 		local function handleChangeWrapper()
-			if self._onStateChange then
-				self._onStateChange()
+			if self.onStateChange then
+				self.onStateChange()
 			end
 		end
 
@@ -56,5 +56,7 @@ function Subscription:tryUnsubscribe()
 		self._listeners = nullListeners
 	end
 end
+
+export type Subscription = typeof(Subscription.new())
 
 return Subscription

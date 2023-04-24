@@ -27,7 +27,10 @@ local function Provider<A, S>(props: ProviderProps<A, S>)
 	React.useLayoutEffect(function()
 		local subscription = contextValue.subscription
 
-		subscription.onStateChange = subscription.notifyNestedSubs
+		subscription.onStateChange = function()
+			subscription:notifyNestedSubs()
+		end
+
 		subscription:trySubscribe()
 
 		if previousState ~= store.getState() then

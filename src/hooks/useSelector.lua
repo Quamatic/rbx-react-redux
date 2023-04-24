@@ -8,10 +8,6 @@ local refEquality: types.EqualityFn<any> = function(a, b)
 	return a == b
 end
 
-local function subscribe(store_, callback)
-	return store_.subscribe(callback)
-end
-
 local function is(x, y)
 	return x == y and (x ~= 0 or 1 / x == 1 / y) or x ~= x and y ~= y
 end
@@ -99,6 +95,10 @@ local function createSelectorHook(context)
 
 			return nextSelection
 		end, { selector })
+
+		local subscribe = React.useCallback(function(_, callback)
+			return ctx.subscription:addNestedSub(callback)
+		end, {})
 
 		local selectedState = React.useMutableSource(source, getSnapshot, subscribe)
 
