@@ -2,7 +2,10 @@
 Performant React bindings for `rbx-redux`
  
 # Installation
-Wally package coming soon.
+Add this to your `wally.toml` file:
+```console
+ReactRedux = "quamatic/rbx-react-redux@1.0.0"
+```
 
 # Usage Guide
 ## Passing a Store
