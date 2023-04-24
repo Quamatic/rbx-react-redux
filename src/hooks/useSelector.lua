@@ -12,6 +12,10 @@ local function is(x, y)
 	return x == y and (x ~= 0 or 1 / x == 1 / y) or x ~= x and y ~= y
 end
 
+-- This is written akin to useSyncExternalStoreWithSelector.
+-- However, only React 18 has useSyncExternalStore, so since we are on React 17,
+-- we have to use useMutableStore.
+
 local function createSelectorHook(context)
 	context = context or ReactReduxContext
 
@@ -51,16 +55,19 @@ local function createSelectorHook(context)
 		local ctx = useReduxContext()
 		local store = ctx.store
 
-		local source = React.createMutableSource(store, function()
-			return store.getState()
-		end)
+		local source = React.useMemo(function()
+			return React.createMutableSource(store, function()
+				return store.getState()
+			end)
+		end, { store })
 
-		local getSnapshot_unstable_ = React.useMemo(function()
+		local getSnapshot = React.useMemo(function()
 			local hasMemo = false
 			local memoizedSnapshot
 			local memoizedSelection: Selection
 
 			local function memoizedSelector(nextSnapshot: TState)
+				-- nextSnapshot is just the store
 				nextSnapshot = nextSnapshot.getState()
 
 				if not hasMemo then
@@ -104,7 +111,7 @@ local function createSelectorHook(context)
 			return ctx.subscription:addNestedSub(callback)
 		end, {})
 
-		local selectedState = React.useMutableSource(source, getSnapshot_unstable_, subscribe)
+		local selectedState = React.useMutableSource(source, getSnapshot, subscribe)
 
 		React.useEffect(function()
 			inst.hasValue = true

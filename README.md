@@ -1,6 +1,6 @@
 # rbx-react-redux
-React bindings for `rbx-redux`
-
+Performant React bindings for `rbx-redux`
+ 
 # Installation
 Wally package coming soon.
 

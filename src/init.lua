@@ -5,6 +5,7 @@ local useDispatch = require(script.hooks.useDispatch)
 local useStore = require(script.hooks.useStore)
 local useSelector = require(script.hooks.useSelector)
 
+-- Set our batch to use React's batched updates.
 batch.setBatch(reactBatchedUpdates)
 
 return {
