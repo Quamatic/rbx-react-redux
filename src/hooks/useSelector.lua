@@ -12,6 +12,10 @@ local function subscribe(store_, callback)
 	return store_.subscribe(callback)
 end
 
+local function is(x, y)
+	return x == y and (x ~= 0 or 1 / x == 1 / y) or x ~= x and y ~= y
+end
+
 local function createSelectorHook(context)
 	context = context or ReactReduxContext
 
@@ -21,8 +25,8 @@ local function createSelectorHook(context)
 			return React.useContext(context)
 		end
 
-	return function<TState, Selected>(selector: (state: TState) -> Selected, equalityFn: types.EqualityFn<Selected>?): Selected
-		equalityFn = equalityFn or refEquality
+	return function<TState, Selected>(selector: (state: TState) -> Selected, isEqual: types.EqualityFn<Selected>?): Selected
+		isEqual = isEqual or refEquality
 
 		if not _G.__DEV__ then
 			if not selector then
@@ -33,9 +37,22 @@ local function createSelectorHook(context)
 				error("You must pass a function as a selector to useSelector")
 			end
 
-			if typeof(equalityFn) ~= "function" then
+			if typeof(isEqual) ~= "function" then
 				error("You must pass a function as an equality function to useSelector")
 			end
+		end
+
+		local instRef = React.useRef(nil)
+		local hasMemo = React.useRef(false)
+		local memoizedSnapshot = React.useRef(nil)
+		local memoizedSelection = React.useRef(nil)
+
+		local inst
+		if instRef.current == nil then
+			inst = { hasValue = false }
+			instRef.current = inst
+		else
+			inst = instRef.current
 		end
 
 		local ctx = useReduxContext()
@@ -46,10 +63,49 @@ local function createSelectorHook(context)
 		end)
 
 		local getSnapshot = React.useCallback(function(store_)
-			return selector(store_.getState())
+			local nextSnapshot = store_.getState()
+
+			if not hasMemo.current then
+				hasMemo.current = true
+				memoizedSelection.current = nextSnapshot
+
+				local nextSelection = selector(nextSnapshot)
+				if inst.hasValue then
+					local currentSelection = inst.value
+					if isEqual(currentSelection, nextSelection) then
+						return currentSelection
+					end
+
+					memoizedSelection = nextSelection
+					return nextSelection
+				end
+			end
+
+			local prevSnapshot = memoizedSnapshot.current
+			local prevSelection = memoizedSelection.current
+
+			if is(prevSnapshot, nextSnapshot) then
+				return prevSelection
+			end
+
+			local nextSelection = selector(nextSnapshot)
+
+			if isEqual(prevSelection, nextSelection) then
+				return prevSelection
+			end
+
+			memoizedSnapshot.current = nextSnapshot
+			memoizedSelection.current = nextSelection
+
+			return nextSelection
 		end, { selector })
 
 		local selectedState = React.useMutableSource(source, getSnapshot, subscribe)
+
+		React.useEffect(function()
+			inst.hasValue = true
+			inst.value = selectedState
+		end, { selectedState })
 
 		React.useDebugValue(selectedState)
 
