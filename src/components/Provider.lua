@@ -1,6 +1,7 @@
 local React = require(script.Parent.Parent.Parent.React)
 
 local ReactReduxContext = require(script.Parent.Parent.components.Context)
+local Subscription = require(script.Parent.Parent.utils.Subscription)
 
 export type ProviderProps<A, S> = {
 	store: any,
@@ -12,7 +13,7 @@ local function Provider<A, S>(props: ProviderProps<A, S>)
 	local store = props.store
 
 	local contextValue = React.useMemo(function()
-		local subscription = {}
+		local subscription = Subscription.new(store)
 		return {
 			store = store,
 			subscription = subscription,
@@ -27,14 +28,14 @@ local function Provider<A, S>(props: ProviderProps<A, S>)
 		local subscription = contextValue.subscription
 
 		subscription.onStateChange = subscription.notifyNestedSubs
-		subscription.trySubscribe()
+		subscription:trySubscribe()
 
 		if previousState ~= store.getState() then
-			subscription.notifyNestedSubs()
+			subscription:notifyNestedSubs()
 		end
 
 		return function()
-			subscription.tryUnsubscribe()
+			subscription:tryUnsubscribe()
 			subscription.onStateChange = nil
 		end
 	end, { contextValue, previousState })

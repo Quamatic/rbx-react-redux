@@ -8,6 +8,10 @@ local refEquality: types.EqualityFn<any> = function(a, b)
 	return a == b
 end
 
+local function subscribe(store_, callback)
+	return store_.subscribe(callback)
+end
+
 local function createSelectorHook(context): <Selected>() -> Selected
 	context = context or ReactReduxContext
 
@@ -40,10 +44,6 @@ local function createSelectorHook(context): <Selected>() -> Selected
 		local source = React.createMutableSource(store, function()
 			return store.getState()
 		end)
-
-		local function subscribe(store_, callback)
-			return store_.subscribe(callback)
-		end
 
 		local getSnapshot = React.useCallback(function(store_)
 			return selector(store_.getState())

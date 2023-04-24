@@ -7,6 +7,9 @@
             "$path": "Packages",
             "ReactRedux": {
                 "$path": "src"
+            },
+            "Stories": {
+                "$path": "stories"
             }
         }
     }
